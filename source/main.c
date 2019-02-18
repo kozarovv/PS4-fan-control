@@ -1,9 +1,9 @@
 #include "ps4.h"
 #include "defines.h"
 
-#define	KERN_XFAST_SYSCALL	0x3095D0	// 4.55
-#define KERN_PRISON_0		0x10399B0
-#define KERN_ROOTVNODE		0x21AFA30
+#define	KERN_XFAST_SYSCALL	0x30B7D0
+#define KERN_PRISON_0		0x1042AB0
+#define KERN_ROOTVNODE		0x21B89E0
 
 int kernel_payload(struct thread *td, struct kernel_payload_args* args)
 {
@@ -19,7 +19,7 @@ int kernel_payload(struct thread *td, struct kernel_payload_args* args)
   uint8_t* kernel_ptr = (uint8_t*)kernel_base;
   void** got_prison0 =   (void**)&kernel_ptr[KERN_PRISON_0];
   void** got_rootvnode = (void**)&kernel_ptr[KERN_ROOTVNODE];
-  *(void**)(&sceRegMgrSetInt) = &kernel_ptr[0x4D6F00];
+  *(void**)(&sceRegMgrSetInt) = &kernel_ptr[0x4D8580];
 
   cred->cr_uid = 0;
   cred->cr_ruid = 0;
