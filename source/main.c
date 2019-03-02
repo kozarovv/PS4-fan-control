@@ -1,3 +1,4 @@
+//Not working, just a draft to remember what ioctl use.
 #include "ps4.h"
 #include "defines.h"
 
@@ -56,19 +57,19 @@ int _main(void)
    kexec(&kernel_payload, NULL); // jailbreak to use system notifications
    initSysUtil();
 
-   int fd = open("/dev/icc_fan", O_RDONLY, 0);
+   int fd = open("/dev/icc_thermal", O_RDONLY, 0);
    if (fd <= 0)
    {
-      sceSysUtilSendSystemNotificationWithText(0x81, "icc_fan can't open\n\n");
+      sceSysUtilSendSystemNotificationWithText(0x81, "icc_thermal can't open\n\n");
    }
 
    else
    {
-      sceSysUtilSendSystemNotificationWithText(0x81, "icc_fan opened\n\n");
+      sceSysUtilSendSystemNotificationWithText(0x81, "icc_thermal opened\n\n");
    }
 
-   char *data[11] = {0x00, 0x00, 0x00, 0x00, 0x00, 60, 0x00, 0x00, 0x00, 0x00, 0x08}; // swap 60 with whatever temp threshold you want, 0x08 may be unnecessary
-   int ret = ioctl(fd, 0xC01C8F07, data);
+   char data[10] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,}; // Unknown length and data
+   int ret = ioctl(fd, 0x0C0169001, data); // or 0C0169002 
    close(fd);
 
    return 0;
